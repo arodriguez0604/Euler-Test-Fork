@@ -1,12 +1,13 @@
 #pragma once
 
-#include <string>
+//#include <string>
 #include <frc/WPILib.h>
 #include <rev/CANSparkMax.h>
 #include <ctre/Phoenix.h>
 #include <frc/Servo.h>
 #include "frc/smartdashboard/SmartDashboard.h"
 #include <AHRS.h>
+#include <math.h>
 
 #define servoOpen     180
 #define servoMid      90
@@ -26,6 +27,7 @@ class Robot : public TimedRobot {
     void TeleopInit() override;
     void TeleopPeriodic() override;
     void TestPeriodic() override;
+    double ToPie(int degrees);
     double DeadZone(double speed, double zone);
 
     const int TALON = 5, SPARK = 7, SERVO = 0, POT = 9;

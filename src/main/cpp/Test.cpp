@@ -19,7 +19,8 @@ void Robot::AutonomousInit() {
 }
 
 void Robot::AutonomousPeriodic() {
-    
+    talon->Set(.5);
+    spark->Set(.5);
 }
 
 void Robot::TeleopInit() {
@@ -61,16 +62,24 @@ void Robot::TeleopPeriodic() {
         }
       }
 
-    SmartDashboard::PutNumber ("Servo Angle", servo->GetAngle());
-    SmartDashboard::PutNumber ("Potentiometer Angle", pot->Get());
+    SmartDashboard::PutNumber  ("Servo Angle", servo->GetAngle());
+    SmartDashboard::PutNumber  ("Potentiometer Angle", ToPie(pot->Get()));
     SmartDashboard::PutBoolean ("Limit Switch", limitSwitch->Get());
     //SmartDashboard::PutNumber ("Talon Speed", talon->GetVelocity());
-    SmartDashboard::PutNumber ("Spark Max Speed", sparkEncoder->GetVelocity());
+    SmartDashboard::PutNumber  ("Spark Max Speed", sparkEncoder->GetVelocity());
+    SmartDashboard::PutNumber  ("Y - Axis (Left)", xbox->GetY(GenericHID::JoystickHand::kLeftHand));
+    SmartDashboard::PutNumber  ("X - Axis (Left)", xbox->GetX(GenericHID::JoystickHand::kLeftHand));
+    SmartDashboard::PutNumber  ("Y - Axis (Right)", xbox->GetY(GenericHID::JoystickHand::kRightHand));
+    SmartDashboard::PutNumber  ("X - Axis (Right)", xbox->GetX(GenericHID::JoystickHand::kRightHand));
 
 }
 
 void Robot::TestPeriodic() {
     TeleopPeriodic();
+}
+
+double Robot::ToPie (int degrees) {
+    return (degrees / 180) * M_PI;
 }
 
 double Robot::DeadZone(double speed, double zone) {
