@@ -8,11 +8,14 @@
 #include "frc/smartdashboard/SmartDashboard.h"
 #include <AHRS.h>
 
-#define servoOpen     90
-#define servoClosed   125
+#define servoOpen     180
+#define servoMid      90
+#define servoClosed   0
 
 using namespace frc;
 using namespace rev;
+
+bool driveMode = false;
 
 class Robot : public TimedRobot {
   public:
@@ -31,6 +34,7 @@ class Robot : public TimedRobot {
     rev::CANSparkMax *spark;
     rev::CANEncoder *sparkEncoder;
     WPI_TalonSRX *talon;
+    DigitalInput *limitSwitch;
     Servo *servo;
     AnalogPotentiometer *pot;
     XboxController *xbox;
