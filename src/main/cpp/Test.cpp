@@ -30,6 +30,11 @@ void Robot::TeleopPeriodic() {
     if (xbox->GetBackButtonPressed())
         driveMode = !driveMode;
 
+    if (limitSwitch->Get())
+        limitSwitchBool = !limitSwitchBool;
+    
+    SmartDashboard::PutBoolean ("Limit Switch Variable", limitSwitch);
+
     if (!driveMode) {
         if (xbox->GetStickButton(GenericHID::JoystickHand::kRightHand)) {
             servo->SetAngle(servoMid);

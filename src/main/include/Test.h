@@ -17,6 +17,7 @@ using namespace frc;
 using namespace rev;
 
 bool driveMode = false;
+bool limitSwitchBool = false;
 
 class Robot : public TimedRobot {
   public:
