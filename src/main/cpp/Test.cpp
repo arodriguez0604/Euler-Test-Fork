@@ -4,7 +4,7 @@ void Robot::RobotInit() {
     xbox         = new frc::XboxController(0);
     spark        = new CANSparkMax(SPARK, CANSparkMax::MotorType::kBrushless);
     talon        = new WPI_TalonSRX(TALON);
-    limitSwitch  = new DigitalInput(9);
+    limitSwitch  = new DigitalInput(LIMITSWITCH);
     servo        = new Servo(SERVO);
     pot          = new AnalogPotentiometer(POT, 360, 0.0);
     sparkEncoder = new CANEncoder(*spark);
@@ -27,7 +27,7 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
-    if (xbox->GetBackButtonPressed())
+    if (xbox->GetYButtonPressed())
         driveMode = !driveMode;
 
     if (limitSwitch->Get())
@@ -53,7 +53,7 @@ void Robot::TeleopPeriodic() {
             SmartDashboard::PutBoolean ("Servo Middle", false);
           }
     } else {
-        if (pot->Get() > 0) {
+        if (!(limitSwitch->Get())) {
             if (xbox->GetBumper(GenericHID::JoystickHand::kLeftHand)) {
                 spark->Set(DeadZone(xbox->GetY(GenericHID::JoystickHand::kLeftHand), .25) / 2.0);
                 talon->Set(DeadZone(xbox->GetY(GenericHID::JoystickHand::kRightHand), .25) / 2.0);
@@ -64,10 +64,15 @@ void Robot::TeleopPeriodic() {
                     spark->Set(DeadZone(xbox->GetY(GenericHID::JoystickHand::kLeftHand), .25));
                     talon->Set(DeadZone(xbox->GetY(GenericHID::JoystickHand::kRightHand), .25));
                   }
-        }
+        } else {
+            spark->Set(0);
+            talon->Set(0);
+          }
       }
 
     SmartDashboard::PutNumber  ("Servo Angle", servo->GetAngle());
+    SmartDashboard::PutBoolean ("Drive Mode", driveMode);
+    SmartDashboard::PutBoolean ("Limit Switch On", limitSwitchBool);
     SmartDashboard::PutNumber  ("Potentiometer Angle", ToPie(pot->Get()));
     SmartDashboard::PutBoolean ("Limit Switch", limitSwitch->Get());
     //SmartDashboard::PutNumber ("Talon Speed", talon->GetVelocity());

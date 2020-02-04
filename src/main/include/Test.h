@@ -31,7 +31,7 @@ class Robot : public TimedRobot {
     double ToPie(int degrees);
     double DeadZone(double speed, double zone);
 
-    const int TALON = 5, SPARK = 7, SERVO = 0, POT = 9;
+    const int TALON = 5, SPARK = 7, SERVO = 0, POT = 0, LIMITSWITCH = 0;
 
   private:
     rev::CANSparkMax *spark;
